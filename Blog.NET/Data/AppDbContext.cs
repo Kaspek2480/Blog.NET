@@ -1,5 +1,6 @@
 ﻿using Blog.NET.Models;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Blog.NET.Data
 {
