@@ -17,7 +17,7 @@ namespace Blog.NET.Models
 
 
         // Wiele do jednego
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public BlogNETUser User { get; set; }
     }
 }

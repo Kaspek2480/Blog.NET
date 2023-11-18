@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.NET.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231118131815_init")]
+    [Migration("20231118164923_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -24,9 +24,8 @@ namespace Blog.NET.Migrations
 
             modelBuilder.Entity("Blog.NET.Areas.Identity.Data.BlogNETUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -92,8 +91,9 @@ namespace Blog.NET.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
