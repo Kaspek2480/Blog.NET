@@ -1,10 +1,15 @@
-using Blog.NET.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Blog.NET.Data;
+using Blog.NET.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddDefaultIdentity<BlogNETUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
