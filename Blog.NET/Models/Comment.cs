@@ -6,11 +6,8 @@ namespace Blog.NET.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public string Content { get; set; }
-        [Required]
         public DateTime CreatedAt { get; set; }
-        [Required]
         public string IPAddress { get; set; }
 
 
