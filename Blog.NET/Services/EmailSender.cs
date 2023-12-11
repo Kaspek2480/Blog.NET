@@ -1,19 +1,26 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Blog.NET.Configuration;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-
+using System;
+using System.Threading.Tasks;
 
 namespace Blog.NET.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<EmailSender> _logger;
+        private readonly SendGridSettings _sendGridSettings;
+
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor,
-                       ILogger<EmailSender> logger)
+                           IOptions<SendGridSettings> sendGridSettings,
+                           ILogger<EmailSender> logger)
         {
             Options = optionsAccessor.Value;
             _logger = logger;
+            _sendGridSettings = sendGridSettings.Value;
         }
 
         public AuthMessageSenderOptions Options { get; } //Set with Secret Manager.
@@ -24,12 +31,12 @@ namespace Blog.NET.Services
             {
                 throw new Exception("Null SendGridKey");
             }
-            await Execute(Options.SendGridKey, subject, message, toEmail);
+            await Execute(subject, message, toEmail);
         }
 
-        public async Task Execute(string apiKey, string subject, string message, string toEmail)
+        public async Task Execute(string subject, string message, string toEmail)
         {
-            apiKey = "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";
+            var apiKey = _sendGridSettings.ApiKey;
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
@@ -50,4 +57,3 @@ namespace Blog.NET.Services
         }
     }
 }
-
