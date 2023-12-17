@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.NET.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231203192227_AddAdministratorRole")]
-    partial class AddAdministratorRole
+    [Migration("20231217143024_NowaMigracja")]
+    partial class NowaMigracja
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,9 +76,13 @@ namespace Blog.NET.Migrations
 
             modelBuilder.Entity("Blog.NET.Models.BlogPost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -87,13 +91,28 @@ namespace Blog.NET.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("FeaturedImage")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Heading")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UrlHandle")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -108,8 +127,8 @@ namespace Blog.NET.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BlogPostId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BlogPostId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -135,6 +154,10 @@ namespace Blog.NET.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -146,8 +169,8 @@ namespace Blog.NET.Migrations
 
             modelBuilder.Entity("BlogPostTag", b =>
                 {
-                    b.Property<int>("BlogPostsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BlogPostsId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("TagsId")
                         .HasColumnType("int");
