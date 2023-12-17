@@ -12,7 +12,7 @@ namespace Blog.NET.Models
 
 
         //Relacja wiele do jednego
-        public int BlogPostId { get; set; }
+        public Guid BlogPostId { get; set; }
         public BlogPost BlogPost {  get; set; }
     }
 }
