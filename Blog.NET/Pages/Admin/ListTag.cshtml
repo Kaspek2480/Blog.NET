@@ -20,7 +20,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Display Name</th>
                 <th></th>
@@ -30,11 +29,10 @@
             @foreach (var tag in Model.Tags)
             {
                 <tr>
-                    <td>@tag.Id</td>
                     <td>@tag.Name</td>
                     <td>@tag.DisplayName</td>
                     <td>
-                        <a asp-area="" asp-page="/Admin/Edit" asp-route-id="@tag.Id">Edit</a>
+                        <a asp-area="" asp-page="/Admin/EditTag" asp-route-id="@tag.Id">Edit</a>
                     </td>
                 </tr>
             }

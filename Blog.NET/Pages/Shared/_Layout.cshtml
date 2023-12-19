@@ -27,15 +27,17 @@
                     </li>
                     @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Admin/RemoveUser">Remove User</a>
-                            </li>
-                            <li>
-                                <a class="nav-link" asp-area="" asp-page="/Admin/AddTag">Add Tag</a>
-                            </li>
-                            <li>
-                                <a class="nav-link" asp-area="" asp-page="/Admin/ListTag">List Tags</a>
-                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/RemoveUser">Remove User</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/AddPost">Add BlogPost</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/AddTag">Add Tag</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/ListTag">List Tags</a></li>
+                                </ul>
+                             </li>
                         }
                     </ul>
                 <partial name="_LoginPartial"/>

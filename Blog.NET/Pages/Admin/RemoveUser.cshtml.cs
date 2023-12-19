@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+
 using Blog.NET.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.NET.Pages.Admin;
+[Authorize(Roles = "Admin")]
 public class RemoveUserModel : PageModel
 {
+    
     private readonly UserManager<BlogNETUser> _userManager;
     private readonly ILogger<RemoveUserModel> _logger;
 
@@ -25,17 +28,17 @@ public class RemoveUserModel : PageModel
 
         if (user != null)
         {
-            // Usuñ u¿ytkownika
+            // Usuï¿½ uï¿½ytkownika
             var result = _userManager.DeleteAsync(user).Result;
 
             if (result.Succeeded)
             {
-                // Obs³u¿ sukces
+                // Obsï¿½uï¿½ sukces
                 return RedirectToPage("/ConfirmRemoveUser");
             }
             else
             {
-                // Obs³u¿ b³êdy usuwania u¿ytkownika
+                // Obsï¿½uï¿½ bï¿½ï¿½dy usuwania uï¿½ytkownika
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -43,7 +46,7 @@ public class RemoveUserModel : PageModel
             }
         }
 
-        // Obs³u¿ sytuacjê, gdy u¿ytkownik nie zosta³ znaleziony
+        // Obsï¿½uï¿½ sytuacjï¿½, gdy uï¿½ytkownik nie zostaï¿½ znaleziony
         return NotFound();
     }
 }

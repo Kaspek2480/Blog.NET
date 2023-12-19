@@ -1,15 +1,19 @@
 ﻿using Blog.NET.Data;
 using Blog.NET.Models;
 using Blog.NET.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.NET.Pages.Admin;
+[Authorize(Roles = "Admin")]
 
-public class EditModel : PageModel
+public class EditTagModel : PageModel
 {
+    
     private readonly AppDbContext _context;
-    public EditModel (AppDbContext context)
+    public EditTagModel (AppDbContext context)
     {
         _context = context;
     }
@@ -17,9 +21,9 @@ public class EditModel : PageModel
     [BindProperty]
     public EditTagRequest EditTagRequest { get; set; }
     
-    public IActionResult OnGet(int id)
+    public async Task<IActionResult> OnGet(int id)
     {
-        var tag = _context.Tags.FirstOrDefault(t => Equals(t.Id, id));
+        var tag = await _context.Tags.FirstOrDefaultAsync(t => Equals(t.Id, id));
 
         if (tag != null)
         {
@@ -36,7 +40,7 @@ public class EditModel : PageModel
         return NotFound();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPost()
     {
         if (ModelState.IsValid)
         {
@@ -47,14 +51,14 @@ public class EditModel : PageModel
                 DisplayName = EditTagRequest.DisplayName
             };
             
-            var existingTag = _context.Tags.FirstOrDefault(t => Equals(t.Id, tag.Id));
+            var existingTag = await _context.Tags.FirstOrDefaultAsync(t => Equals(t.Id, tag.Id));
             
             if(existingTag != null)
             {
                 existingTag.Name = tag.Name;
                 existingTag.DisplayName = tag.DisplayName;
                 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 
                 return RedirectToPage("/Admin/ListTag");
             }
@@ -64,14 +68,14 @@ public class EditModel : PageModel
         
     }
     
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
         var tag = _context.Tags.FirstOrDefault(t => Equals(t.Id, id));
         
         if (tag != null)
         {
             _context.Tags.Remove(tag);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             
             return RedirectToPage("/Admin/ListTag");
         }

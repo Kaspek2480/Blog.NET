@@ -1,6 +1,4 @@
 ﻿using Blog.NET.Areas.Identity.Data;
-using Blog.NET.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace Blog.NET.Models
 {
@@ -25,9 +23,6 @@ namespace Blog.NET.Models
         public bool Visible { get; set; }
         public List<Tag> Tags { get; set; }
         public List<Comment> Comments { get; set; }
-
-
-        // Wiele do jednego
         public string UserId { get; set; }
         public BlogNETUser User { get; set; }
     }
