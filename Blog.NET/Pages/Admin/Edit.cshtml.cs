@@ -30,7 +30,7 @@ public class EditModel : PageModel
                 DisplayName = tag.DisplayName
             };
 
-            return Page(); // Zwracamy widok Edit.cshtml
+            return Page();
         }
 
         return NotFound();
@@ -40,12 +40,6 @@ public class EditModel : PageModel
     {
         if (ModelState.IsValid)
         {
-            if (EditTagRequest == null || EditTagRequest.Id == null || EditTagRequest.Name == null || EditTagRequest.DisplayName == null)
-            {
-                //For debug purposes
-                return RedirectToPage("/Privacy");
-            }
-
             var tag = new Tag
             {
                 Id = EditTagRequest.Id,
@@ -68,5 +62,20 @@ public class EditModel : PageModel
         
         return RedirectToAction("OnGet", new {id = EditTagRequest.Id});
         
+    }
+    
+    public IActionResult OnPostDelete(int id)
+    {
+        var tag = _context.Tags.FirstOrDefault(t => Equals(t.Id, id));
+        
+        if (tag != null)
+        {
+            _context.Tags.Remove(tag);
+            _context.SaveChanges();
+            
+            return RedirectToPage("/Admin/ListTag");
+        }
+
+        return RedirectToAction("OnGet", new {id = EditTagRequest.Id});
     }
 }

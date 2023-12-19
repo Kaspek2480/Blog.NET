@@ -28,7 +28,12 @@
         </div>
         
         <div class="mb-3">
-            <button type="submit" class="btn btn-dark">Update</button>
+            
+            <div class=d-flex>
+                <button type="submit" class="btn btn-dark" formaction="/Admin/Edit?handler=OnPost">Update</button>
+                <button type="submit" class="btn btn-danger ms-2" formaction="/Admin/Edit?handler=Delete&id=@Model.EditTagRequest.Id">Delete</button>
+            </div>
+            
         </div>
         
     </form>
