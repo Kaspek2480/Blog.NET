@@ -5,6 +5,7 @@ using Blog.NET.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Blog.NET.Services;
 using Blog.NET.Configuration;
+using Blog.NET.Pages.Admin;
 
 var builder = WebApplication.CreateBuilder(args);
 

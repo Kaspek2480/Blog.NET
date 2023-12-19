@@ -1,0 +1,14 @@
+﻿@page
+@model RemoveUserModel
+
+<h2>Remove User</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="inputEmail">User's Email:</label>
+        <input type="email" class="form-control" id="inputEmail" name="UserEmail" placeholder="Enter user's email" required>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Confirm Remove</button>
+    <a asp-page="/Index" class="btn btn-secondary">Cancel</a>
+</form>

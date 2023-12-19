@@ -1,0 +1,45 @@
+﻿@page
+@model ListCshtml.ListTagModel
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="display-4">List of all tags</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    @if(Model.Tags == null || Model.Tags.Count == 0)
+    {
+        <p>There are no tags to show.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Display Name</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var tag in Model.Tags)
+            {
+                <tr>
+                    <td>@tag.Id</td>
+                    <td>@tag.Name</td>
+                    <td>@tag.DisplayName</td>
+                    <td>
+                        <a asp-area="" asp-page="/Admin/Edit" asp-route-id="@tag.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+
+</div>
