@@ -39,7 +39,8 @@ namespace Blog.NET.Pages.Admin
             _context.Tags.Add(newTag);
             _context.SaveChanges();
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Admin/ListTag");
         }
+        
     }
 }
