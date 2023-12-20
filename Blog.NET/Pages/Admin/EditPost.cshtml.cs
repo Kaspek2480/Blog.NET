@@ -63,17 +63,19 @@ public class EditPostModel : PageModel
         post.FeaturedImage = EditPost!.FeaturedImage;
         post.Visible = EditPost.Visible;
         
-        post.Tags?.Clear();
+        //post.Tags?.Clear();
 
-        if (EditPost.Tags != null)
-            foreach (var tag in EditPost.Tags)
+        
+        foreach (var tag in Request.Form["EditPost.Tags"].ToList())
+        {
+            var tagToAdd = _context.Tags.FirstOrDefault(t => t.Id.ToString() == tag);
+            if (tagToAdd == null)
             {
-                var tagInDb = await _context.Tags.FindAsync(tag.Id);
-                if (tagInDb != null)
-                {
-                    post.Tags?.Add(tagInDb);
-                }
+                throw new Exception("Tag provided in form not found in database " + tag);
             }
+
+            post.Tags.Add(tagToAdd);
+        }
 
         _context.Blogs.Update(post);
         await _context.SaveChangesAsync();
