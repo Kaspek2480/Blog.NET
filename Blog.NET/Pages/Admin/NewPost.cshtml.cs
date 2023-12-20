@@ -62,8 +62,9 @@ public class NewPostController : Controller
                 FeaturedImage = FeaturedImage,
                 UrlHandle = UrlHandle,
                 Description = Description,
-                CreatedAt = DateTime.Now,
-                Visible = Visible, //FIXME: don't work (probably sth in cshmtl)
+                //CreatedAt = DateTime.Now,
+                CreatedAt = CreatedAt,
+                Visible = Visible, 
                 UserId = blogNetUser.Id,
                 User = blogNetUser
             };
