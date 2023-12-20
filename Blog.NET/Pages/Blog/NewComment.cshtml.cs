@@ -29,17 +29,17 @@ public class NewCommentModel : PageModel
         {
             return Page();
         }
-
-
+        
         var comment = new Comment()
         {
             Content = NewComment!.RawContent!,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.Now,
+            IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
         };
 
         await _context.Comments.AddAsync(comment);
         await _context.SaveChangesAsync();
 
-        return RedirectToPage("/Admin/ListTag");
+        return RedirectToPage("/");
     }
 }

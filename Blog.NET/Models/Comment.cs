@@ -9,7 +9,7 @@ namespace Blog.NET.Models
 
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string IPAddress { get; set; }
+        public string? IPAddress { get; set; }
 
 
         //Relacja wiele do jednego
