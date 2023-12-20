@@ -1,4 +1,5 @@
-﻿using Blog.NET.Data;
+﻿using System.Diagnostics;
+using Blog.NET.Data;
 using Microsoft.AspNetCore.Mvc;
 using Blog.NET.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +21,11 @@ public class ListCshtml : Controller
         public void OnGet()
         {
             Tags = _context.Tags.ToList();
+            Debug.WriteLine("Tags: ");
+            foreach (var tag in Tags)
+            {
+                Debug.WriteLine(tag.Name);
+            }
         }
     }
 }

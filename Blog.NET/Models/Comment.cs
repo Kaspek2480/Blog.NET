@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+// ReSharper disable All
 
 namespace Blog.NET.Models
 {

@@ -30,6 +30,11 @@
 
     <ItemGroup>
       <Folder Include="Migrations\" />
+      <Folder Include="Pages\Blog\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Blog\AddPost.cshtml" />
     </ItemGroup>
 
 </Project>

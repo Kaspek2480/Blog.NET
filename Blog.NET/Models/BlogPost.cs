@@ -21,9 +21,15 @@ namespace Blog.NET.Models
         public DateTime CreatedAt { get; set; }
 
         public bool Visible { get; set; }
-        public List<Tag> Tags { get; set; }
-        public List<Comment> Comments { get; set; }
+        public List<Tag> Tags { get; set; } = new();
+        public List<Comment> Comments { get; set; } = new();
         public string UserId { get; set; }
         public BlogNETUser User { get; set; }
+
+        public override string ToString()
+        {
+            return
+                $"BlogPost(Id={Id}, Heading={Heading}, Title={Title}, Content={Content}, FeaturedImage={FeaturedImage}, UrlHandle={UrlHandle}, Description={Description}, CreatedAt={CreatedAt}, Visible={Visible}, Tags={Tags}, Comments={Comments}, UserId={UserId}, User={User})";
+        }
     }
 }

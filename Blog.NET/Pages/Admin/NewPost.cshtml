@@ -1,5 +1,5 @@
-﻿@page
-@model Blog.NET.Models.ViewModels.AddBlogPostRequest
+@page
+@model NewPostController.NewPostModel
 
 @{
 }
@@ -14,51 +14,50 @@
     <form method="post">
         <div class="mb-3">
             <label class="form-label">Heading</label>
-            <input type="text" class="form-control" id="heading" asp-for="Heading" />
+            <input type="text" class="form-control" id="heading" asp-for="Heading"/>
         </div>
         <div class="mb-3">
             <label class="form-label">PageTitle</label>
-            <input type="text" class="form-control" id="title" asp-for="Title" />
+            <input type="text" class="form-control" id="title" asp-for="Title"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Content</label>
-            <textarea class="form-control" id="content" asp-for="Content"></textarea>
+            <textarea class="form-control" id="content" asp-for="RawContent"></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">Short Description</label>
-            <input type="text" class="form-control" id="=description" asp-for="Description" />
+            <input type="text" class="form-control" id="=description" asp-for="Description"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Featured image URL</label>
-            <input type="text" class="form-control" id="=featuredImageURL" asp-for="FeaturedImage" />
+            <input type="text" class="form-control" id="=featuredImageURL" asp-for="FeaturedImage"/>
         </div>
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" id="=urlHandle" asp-for="UrlHandle" />
+            <input type="text" class="form-control" id="=urlHandle" asp-for="UrlHandle"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Published Date</label>
-            <input type="date" class="form-control" id="=publishedDate" asp-for="CreatedAt" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Author</label>
-            <input type="text" class="form-control" id="=author" asp-for="UserId" />
+            <input type="date" class="form-control" id="=publishedDate" asp-for="CreatedAt"/>
         </div>
         <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" value="" id="=isVisible" asp-for="Visible" />
+            <input class="form-check-input" type="checkbox" value="@Model.Visible" id="=isVisible" asp-for="Visible"/>
             <label class="form-check-label">Set as visible</label>
         </div>
         <div class="mb-3">
             <label class="form-label">Tags</label>
-            <select class="form-select" asp-items="@Model.Tags" asp-for="SelectedTag">
-                <option value="">Select a tag...</option>
+            <select class="form-select" multiple aria-label="multiple select example" asp-for="Tags">
+                @foreach (var tag in Model.Tags)
+                {
+                    <option value="@tag.Id">@tag.DisplayName</option>
+                }
             </select>
         </div>
-        
+
+
         <div class="mb-3">
             <button type="submit" class="btn btn-dark">Submit</button>
         </div>
-        
+
     </form>
 </div>
-
