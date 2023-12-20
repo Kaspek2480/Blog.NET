@@ -2,6 +2,7 @@ using Blog.NET.Areas.Identity.Data;
 using Blog.NET.Configuration;
 using Blog.NET.Data;
 using Blog.NET.Services;
+using Blog.NET.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("S
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+
+builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

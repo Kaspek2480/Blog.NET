@@ -11,7 +11,7 @@
 </div>
 
 <div class="container py-5">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label">Title</label>
             <input type="text" class="form-control" id="title" asp-for="NewPost!.Title"/>
@@ -24,6 +24,15 @@
             <label class="form-label">Content</label>
             <textarea class="form-control" id="content" asp-for="NewPost!.RawContent"></textarea>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Featured image upload</label>
+            <input type="file" id="featuredImageUpload" name="featuredImage" class="form-control" />
+        </div>
+        
+        <div class="mb-3">
+            <img id="featuredImagePreview" src="" alt="Featured Image Preview" style="max-width: 100%;" />
+        </div>
+        
         <div class="mb-3">
             <label class="form-label">Featured image URL</label>
             <input type="text" class="form-control" id="=featuredImageURL" asp-for="NewPost!.FeaturedImage"/>
@@ -57,3 +66,33 @@
 
     </form>
 </div>
+
+@section Scripts
+{
+    <script>
+        var editor = new FroalaEditor('#content', {
+            height: 300
+        })
+        
+        
+        document.getElementById('featuredImageUpload').addEventListener('change', function () {
+            var input = this;
+            var imgPreview = document.getElementById('featuredImagePreview');
+            var imageURLInput = document.getElementById('featuredImageURL');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imgPreview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(input.files[0]);
+                
+                var imageUrl = '@ViewData["FeaturedImageURL"]';
+                imageURLInput.value = imageUrl;
+            }
+        });
+        
+    </script>
+}

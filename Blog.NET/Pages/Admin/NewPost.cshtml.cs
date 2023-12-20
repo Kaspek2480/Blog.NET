@@ -3,6 +3,7 @@ using Blog.NET.Areas.Identity.Data;
 using Blog.NET.Data;
 using Blog.NET.Models;
 using Blog.NET.Models.ViewModels;
+using Blog.NET.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,10 +14,12 @@ namespace Blog.NET.Pages.Admin;
 public class NewPostModel : PageModel
 {
     private readonly AppDbContext _context;
+    private readonly IImageRepository _imageRepository;
 
-    public NewPostModel(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+    public NewPostModel(AppDbContext context, IHttpContextAccessor httpContextAccessor, IImageRepository imageRepository)
     {
         _context = context;
+        _imageRepository = imageRepository;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -70,6 +73,16 @@ public class NewPostModel : PageModel
 
             post.Tags.Add(tagToAdd);
         }
+        
+        IFormFile? featuredImage = Request.Form.Files["featuredImage"];
+        
+        if(featuredImage != null && featuredImage.Length > 0)
+        {
+            var imageUrl = _imageRepository.UploadAsync(featuredImage).Result;
+            post.FeaturedImage = imageUrl;
+        }
+        
+        
 
         Debug.WriteLine("Post: " + post);
         _context.Blogs.Add(post);
