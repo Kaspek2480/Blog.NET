@@ -21,11 +21,16 @@ public class EditPostModel : PageModel
     }
     
     [BindProperty] public EditPost? EditPost { get; set; }
+    [BindProperty] public Guid _id { get; set; }
     
-    public async Task<IActionResult> OnGet(int id)
+    public async Task<IActionResult> OnGet(Guid id)
     {
         var post = await _context.Blogs.Include(blogPost => blogPost.Tags).FirstOrDefaultAsync(p => Equals(p.Id, id));
         if (post == null) return NotFound();
+
+        _id = post.Id;
+        
+        //Console.WriteLine(_id);
 
         EditPost = new EditPost
         {
@@ -41,31 +46,53 @@ public class EditPostModel : PageModel
         return Page();
     }
     
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPostUpdate()
     {
 
-        if (ModelState.IsValid)
-        {
-
-            var postToUpdate = await _context.Blogs.Include(blogPost => blogPost.Tags).FirstOrDefaultAsync(p => p.Id == EditPost.Id);
-
-            if (postToUpdate != null)
-            {
-                postToUpdate.Title = EditPost.Title;
-                postToUpdate.Description = EditPost.Description;
-                postToUpdate.Content = EditPost.RawContent;
-                postToUpdate.FeaturedImage = EditPost.FeaturedImage;
-                postToUpdate.Visible = EditPost.Visible;
-                postToUpdate.Tags = EditPost.Tags;
-
-
-                await _context.SaveChangesAsync();
-
-                return RedirectToPage("/Admin/ListPost"); 
-            }
-        }
+        if (!ModelState.IsValid)
+            return Page();
         
-        return Page();
+        var post = await _context.Blogs.Include(blogPost => blogPost.Tags).FirstOrDefaultAsync(p => Equals(p.Id, _id));
+        
+        if (post == null)
+            throw new Exception("Tried to edit non-existing post (id: " + EditPost?.Id + ")"); 
+        
+        post.Title = EditPost!.Title!;
+        post.Description = EditPost!.Description!;
+        post.Content = EditPost!.RawContent!;
+        post.FeaturedImage = EditPost!.FeaturedImage;
+        post.Visible = EditPost.Visible;
+        
+        post.Tags?.Clear();
+
+        if (EditPost.Tags != null)
+            foreach (var tag in EditPost.Tags)
+            {
+                var tagInDb = await _context.Tags.FindAsync(tag.Id);
+                if (tagInDb != null)
+                {
+                    post.Tags?.Add(tagInDb);
+                }
+            }
+
+        _context.Blogs.Update(post);
+        await _context.SaveChangesAsync();
+        
+        return RedirectToPage("/Admin/ListPosts");
+        
+    }
+
+    public async Task<IActionResult> OnPostDelete()
+    {
+        var post = await _context.Blogs.Include(blogPost => blogPost.Tags).FirstOrDefaultAsync(p => Equals(p.Id, _id));
+        
+        if (post == null)
+            throw new Exception("Tried to delete non-existing post (id: " + EditPost?.Id + ")");
+        
+        _context.Blogs.Remove(post);
+        await _context.SaveChangesAsync();
+        
+        return RedirectToPage("/Admin/ListPosts");
     }
     
 }

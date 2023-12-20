@@ -21,7 +21,7 @@ namespace Blog.NET.Models
         public DateTime CreatedAt { get; set; }
 
         public bool Visible { get; set; }
-        public List<Tag> Tags { get; set; } = new();
+        public List<Tag>? Tags { get; set; } = new();
         public List<Comment> Comments { get; set; } = new();
         public string UserId { get; set; }
         public BlogNETUser User { get; set; }
