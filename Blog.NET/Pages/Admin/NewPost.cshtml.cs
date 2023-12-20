@@ -54,7 +54,8 @@ public class NewPostModel : PageModel
             CreatedAt = DateTime.Now,
             Visible = NewPost.Visible,
             UserId = blogNetUser.Id,
-            User = blogNetUser
+            User = blogNetUser,
+            FeaturedImage = NewPost.FeaturedImage
         };
 
         //handle tags from form

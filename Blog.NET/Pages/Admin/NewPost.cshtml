@@ -24,10 +24,10 @@
             <label class="form-label">Content</label>
             <textarea class="form-control" id="content" asp-for="NewPost!.RawContent"></textarea>
         </div>
-        @*<div class="mb-3">
+        <div class="mb-3">
             <label class="form-label">Featured image URL</label>
-            <input type="text" class="form-control" id="=featuredImageURL" asp-for="FeaturedImage"/>
-        </div>*@
+            <input type="text" class="form-control" id="=featuredImageURL" asp-for="NewPost!.FeaturedImage"/>
+        </div>
         <div class="form-check mb-3">
             <input class="form-check-input" checked="checked" type="checkbox" id="=isVisible" asp-for="NewPost!.Visible"/>
             <label class="form-check-label">Set as visible</label>
