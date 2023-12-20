@@ -12,7 +12,7 @@ namespace Blog.NET.Models
 
         public string Content { get; set; }
 
-        public string FeaturedImage { get; set; } = "";
+        public string? FeaturedImage { get; set; } = "";
 
         public string UrlHandle { get; set; } = "";
 

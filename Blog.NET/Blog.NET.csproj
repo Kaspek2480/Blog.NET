@@ -33,7 +33,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Pages\Blog\AddPost.cshtml" />
+      <Compile Remove="Pages\Blog\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Pages\Blog\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Pages\Blog\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pages\Blog\**" />
     </ItemGroup>
 
 </Project>
