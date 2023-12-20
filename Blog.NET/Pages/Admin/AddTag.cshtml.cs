@@ -1,5 +1,6 @@
 using Blog.NET.Data;
 using Blog.NET.Models;
+using Blog.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,19 +8,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Blog.NET.Pages.Admin
 {
     [Authorize(Roles = "Admin")]
-    public class AdminTag : PageModel
+    public class NewTagModel : PageModel
     {
         private readonly AppDbContext _context;
 
-        [BindProperty]
-        public string Name { get; set; }
-        [BindProperty]
-        public string DisplayName { get; set; }
+        [BindProperty] public NewTag? NewTag { get; set; }
 
-        public AdminTag(AppDbContext context)
+        public NewTagModel(AppDbContext context)
         {
             _context = context;
         }
+
         public void OnGet()
         {
         }
@@ -34,8 +33,8 @@ namespace Blog.NET.Pages.Admin
 
             var newTag = new Tag
             {
-                Name = Name,
-                DisplayName = DisplayName
+                Name = NewTag!.Name,
+                DisplayName = NewTag.DisplayName
             };
 
             await _context.Tags.AddAsync(newTag);
@@ -43,6 +42,5 @@ namespace Blog.NET.Pages.Admin
 
             return RedirectToPage("/Admin/ListTag");
         }
-        
     }
 }

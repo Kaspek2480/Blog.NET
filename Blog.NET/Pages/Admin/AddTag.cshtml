@@ -1,5 +1,5 @@
 ﻿@page
-@model AdminTag
+@model NewTagModel
 @{
 }
 
@@ -13,12 +13,12 @@
     <form method="post">
         <div class="mb-3">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" id="Name" asp-for="Name" />
+            <input type="text" class="form-control" id="Name" asp-for="NewTag!.Name"/>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Display Name</label>
-            <input type="text" class="form-control" id="DisplayName" asp-for="DisplayName" />
+            <input type="text" class="form-control" id="DisplayName" asp-for="NewTag!.DisplayName"/>
         </div>
 
         <div class="mb-3">

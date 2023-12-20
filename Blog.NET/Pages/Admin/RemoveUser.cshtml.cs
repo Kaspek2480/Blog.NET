@@ -25,25 +25,21 @@ public class RemoveUserModel : PageModel
     public IActionResult OnPost(string userEmail)
     {
         var user = _userManager.FindByEmailAsync(userEmail).Result;
+        if (user == null) return NotFound();
 
-        if (user != null)
+        // Usu� u�ytkownika
+        var result = _userManager.DeleteAsync(user).Result;
+
+        if (result.Succeeded)
         {
-            // Usu� u�ytkownika
-            var result = _userManager.DeleteAsync(user).Result;
+            // Obs�u� sukces
+            return RedirectToPage("/ConfirmRemoveUser");
+        }
 
-            if (result.Succeeded)
-            {
-                // Obs�u� sukces
-                return RedirectToPage("/ConfirmRemoveUser");
-            }
-            else
-            {
-                // Obs�u� b��dy usuwania u�ytkownika
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
+        // Obs�u� b��dy usuwania u�ytkownika
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
         }
 
         // Obs�u� sytuacj�, gdy u�ytkownik nie zosta� znaleziony

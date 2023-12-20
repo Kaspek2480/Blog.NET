@@ -7,79 +7,70 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.NET.Pages.Admin;
-[Authorize(Roles = "Admin")]
 
+[Authorize(Roles = "Admin")]
 public class EditTagModel : PageModel
 {
-    
     private readonly AppDbContext _context;
-    public EditTagModel (AppDbContext context)
+
+    public EditTagModel(AppDbContext context)
     {
         _context = context;
     }
-    
-    [BindProperty]
-    public EditTagRequest EditTagRequest { get; set; }
-    
+
+    [BindProperty] public EditTag? EditTag { get; set; }
+
     public async Task<IActionResult> OnGet(int id)
     {
         var tag = await _context.Tags.FirstOrDefaultAsync(t => Equals(t.Id, id));
+        if (tag == null) return NotFound();
 
-        if (tag != null)
+        EditTag = new EditTag
         {
-            EditTagRequest = new EditTagRequest
-            {
-                Id = tag.Id,
-                Name = tag.Name,
-                DisplayName = tag.DisplayName
-            };
+            Id = tag.Id,
+            Name = tag.Name,
+            DisplayName = tag.DisplayName
+        };
 
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostUpdate(int id)
+    {
+        //changed -> base only on current tag id, never create new tag
+        //TODO: do global validation error page
+
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        return NotFound();
+        var tag = await _context.Tags.FirstOrDefaultAsync(t => Equals(t.Id, id));
+        if (tag == null)
+        {
+            throw new Exception("Tried to edit non-existing tag (id: " + id + ")");
+        }
+
+        tag.Name = EditTag!.Name;
+        tag.DisplayName = EditTag.DisplayName;
+
+        _context.Tags.Update(tag);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("/Admin/ListTag");
     }
 
-    public async Task<IActionResult> OnPost()
-    {
-        if (ModelState.IsValid)
-        {
-            var tag = new Tag
-            {
-                Id = EditTagRequest.Id,
-                Name = EditTagRequest.Name,
-                DisplayName = EditTagRequest.DisplayName
-            };
-            
-            var existingTag = await _context.Tags.FirstOrDefaultAsync(t => Equals(t.Id, tag.Id));
-            
-            if(existingTag != null)
-            {
-                existingTag.Name = tag.Name;
-                existingTag.DisplayName = tag.DisplayName;
-                
-                await _context.SaveChangesAsync();
-                
-                return RedirectToPage("/Admin/ListTag");
-            }
-        }
-        
-        return RedirectToAction("OnGet", new {id = EditTagRequest.Id});
-        
-    }
-    
     public async Task<IActionResult> OnPostDelete(int id)
     {
         var tag = _context.Tags.FirstOrDefault(t => Equals(t.Id, id));
-        
-        if (tag != null)
+        if (tag == null)
         {
-            _context.Tags.Remove(tag);
-            await _context.SaveChangesAsync();
-            
-            return RedirectToPage("/Admin/ListTag");
+            throw new Exception("Tried to delete non-existing tag (id: " + id + ")");
         }
 
-        return RedirectToAction("OnGet", new {id = EditTagRequest.Id});
+        _context.Tags.Remove(tag);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("/Admin/ListTag");
     }
 }
