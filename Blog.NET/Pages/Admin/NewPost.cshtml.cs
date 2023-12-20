@@ -21,7 +21,7 @@ public class NewPostModel : PageModel
     }
 
     [BindProperty] public NewPost? NewPost { get; set; }
-    
+
     public List<Tag>? AvailableTags { get; set; }
 
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -59,7 +59,7 @@ public class NewPostModel : PageModel
         };
 
         //handle tags from form
-        foreach (var tag in Request.Form["Tags"].ToList())
+        foreach (var tag in Request.Form["NewPost.Tags"].ToList())
         {
             //get tag from db by id
             var tagToAdd = _context.Tags.FirstOrDefault(t => t.Id.ToString() == tag);
