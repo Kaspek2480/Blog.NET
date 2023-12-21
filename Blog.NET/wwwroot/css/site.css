@@ -24,3 +24,8 @@ body {
 .blog-details-content img {
   max-width: 100%;
 }
+
+.logo {
+    max-height: 90%;
+    max-width: 90%;
+}
