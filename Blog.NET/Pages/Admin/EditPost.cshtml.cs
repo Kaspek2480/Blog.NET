@@ -22,13 +22,16 @@ public class EditPostModel : PageModel
     
     [BindProperty] public EditPost? EditPost { get; set; }
     [BindProperty] public Guid _id { get; set; }
-    
+    [BindProperty] public string ReferrerUrl { get; set; } = "";
+
     public async Task<IActionResult> OnGet(Guid id)
     {
         var post = await _context.Blogs.Include(blogPost => blogPost.Tags).FirstOrDefaultAsync(p => Equals(p.Id, id));
         if (post == null) return NotFound();
 
         _id = post.Id;
+        
+        ReferrerUrl = Request.Headers["Referer"].ToString();
         
         //Console.WriteLine(_id);
 
@@ -80,7 +83,7 @@ public class EditPostModel : PageModel
         _context.Blogs.Update(post);
         await _context.SaveChangesAsync();
         
-        return RedirectToPage("/Admin/ListPosts");
+        return Redirect(ReferrerUrl);
         
     }
 
@@ -94,7 +97,7 @@ public class EditPostModel : PageModel
         _context.Blogs.Remove(post);
         await _context.SaveChangesAsync();
         
-        return RedirectToPage("/Admin/ListPosts");
+        return Redirect(ReferrerUrl);
     }
     
 }

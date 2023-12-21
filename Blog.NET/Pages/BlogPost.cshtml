@@ -1,5 +1,7 @@
 ﻿@page
 @using Blog.NET.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
 @model BlogPostModel
 
 @{
@@ -22,6 +24,11 @@
                     <span class="text-secondary">@Model.BlogPost.CreatedAt.ToShortDateString()</span>
                 </div>
                 
+                <div class="mb-3">
+                    <span>@Model.TotalLikes</span> likes
+                </div>
+                
+                
                 <div class="mb-3 d-flex">
                     @foreach (var tag in Model.BlogPost.Tags)
                     {
@@ -34,6 +41,13 @@
                 <div class="mb-3 blog-details-content">
                     @Html.Raw(Model.BlogPost.Content)
                 </div>
+                
+                
+                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.BlogPost.UserId || User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-dark" asp-page="/Admin/EditPost" asp-route-id="@Model.BlogPost.Id">Edit Post</a>
+                }
+                
                
             }
         </div>

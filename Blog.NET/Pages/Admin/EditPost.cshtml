@@ -58,6 +58,9 @@
 
             @* This is the hidden field that will be used to pass the post id to the handler *@
             <input type="hidden" asp-for="_id"/>
+            
+            @* This is the hidden field that will be used to pass the referrer url to the handler *@
+            <input type="hidden" asp-for="ReferrerUrl" />
 
             <div class="mb-3">
                 <button type="submit" class="btn btn-dark" asp-page-handler="update">Submit</button>

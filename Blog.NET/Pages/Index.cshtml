@@ -22,6 +22,24 @@
 </div>
 
 <div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col-6 d-flex">
+            @if (Model.Tags == null || Model.Tags.Count == 0)
+            {
+                <p>There are no tags to show.</p>
+            }
+            else
+            {
+                foreach (var tag in Model.Tags)
+                {
+                    <span class="badge bg-dark me-1">@tag.DisplayName</span>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
             @if(Model.Posts == null || Model.Posts.Count == 0)
@@ -41,6 +59,16 @@
                             Published on: @blogPost.CreatedAt.ToShortDateString()
                         </p>
                         
+                        <div class="mb-3">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a id="btn-Like" style="cursor: pointer">
+                                    <i id="thumbsUpIcon" class="bi bi-hand-thumbs-up"></i>
+                                </a> 
+                            }
+                            <span>x</span> likes
+                        </div>
+                        
                         <p class="mb-4">
                             @foreach(var tag in blogPost.Tags)
                             {
@@ -56,3 +84,21 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+<script>
+        const btnLike = document.getElementById("btn-Like");
+        const thumbsUpIcon = document.getElementById("thumbsUpIcon");
+
+        btnLike.addEventListener("click", () => {
+            if (thumbsUpIcon.classList.contains("bi-hand-thumbs-up")) {
+                thumbsUpIcon.classList.remove("bi-hand-thumbs-up");
+                thumbsUpIcon.classList.add("bi-hand-thumbs-up-fill");
+            } else {
+                thumbsUpIcon.classList.remove("bi-hand-thumbs-up-fill");
+                thumbsUpIcon.classList.add("bi-hand-thumbs-up");
+            }
+        });
+    </script>
+}
