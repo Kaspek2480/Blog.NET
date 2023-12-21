@@ -26,16 +26,16 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Featured image upload</label>
-            <input type="file" id="featuredImageUpload" name="featuredImage" class="form-control" />
+            <input type="file" id="featuredImageUpload" name="featuredImage" class="form-control"/>
         </div>
-        
+
         <div class="mb-3">
-            <img id="featuredImagePreview" src="" alt="Featured Image Preview" style="max-width: 100%;" />
+            <img id="featuredImagePreview" alt="Featured Image Preview" style="max-width: 100%;"/>
         </div>
-        
+
         <div class="mb-3">
-            <label class="form-label">Featured image URL</label>
-            <input type="text" class="form-control" id="=featuredImageURL" asp-for="NewPost!.FeaturedImage"/>
+            <label class="form-label">Custom URL</label>
+            <input type="text" class="form-control" id="=featuredImageURL" asp-for="NewPost!.CustomUrl"/>
         </div>
         <div class="form-check mb-3">
             <input class="form-check-input" checked="checked" type="checkbox" id="=isVisible" asp-for="NewPost!.Visible"/>
@@ -91,8 +91,7 @@
 
                 reader.readAsDataURL(input.files[0]);
                 
-                var imageUrl = '@ViewData["FeaturedImageURL"]';
-                imageURLInput.value = imageUrl;
+                imageURLInput.value = '@ViewData["FeaturedImageURL"]';
             }
         });
         

@@ -19,7 +19,7 @@ może zawierać kilka tagów. Do wpisu mogą być dołączone zdjęcia
 
     public List<string>? Images { get; set; } //TODO: add image upload
 
-    public string? FeaturedImage { get; set; }
+    public string? CustomUrl { get; set; }
 
     public bool Visible { get; set; } = true;
     public List<Tag>? Tags { get; set; }

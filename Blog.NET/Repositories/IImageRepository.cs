@@ -1,6 +1,8 @@
-﻿namespace Blog.NET.Repositories;
+﻿using CloudinaryDotNet.Actions;
+
+namespace Blog.NET.Repositories;
 
 public interface IImageRepository
 {
-    Task<string> UploadAsync(IFormFile file);
+    Task<ImageUploadResult> UploadAsync(IFormFile file);
 }
