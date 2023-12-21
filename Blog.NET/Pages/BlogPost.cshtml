@@ -45,8 +45,61 @@
                 
                 @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.BlogPost.UserId || User.IsInRole("Admin"))
                 {
-                    <a class="btn btn-dark" asp-page="/Admin/EditPost" asp-route-id="@Model.BlogPost.Id">Edit Post</a>
+                    <a class="btn btn-dark mb-3" asp-page="/Admin/EditPost" asp-route-id="@Model.BlogPost.Id">Edit Post</a>
                 }
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Comments</h5>
+                        
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <form method="post">
+                                <div class="mb-3">
+                                    <label class="form-label">Comment Description</label>
+                                    <input type="text" class="form-control"/> @*asp-for="Comment.Description"*@
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                    @*<input type="hidden" asp-for="Comment.BlogPostId" value="@Model.BlogPost.Id"/>*@
+                                </div>
+                            </form>
+                        }
+                        
+                        @* TODO: Add a comment counter *@
+                        @* TODO: Display comments here *@
+                        @*
+                        <div class="card-body">
+                            @if(Model.Comments == null || Model.Comments.Count == 0)
+                            {
+                                <p>There are no comments to show.</p>
+                            }
+                            else
+                            {
+                                foreach (var comment in Model.Comments)
+                                {
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div>
+                                                @comment.Description
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-secondary">@comment.UserId</span>
+                                                <span class="text-secondary">@comment.CreatedAt.ToShortDateString()</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        *@
+                    </div>
+                    <div class="card-body">
+                        
+                    </div>
+                </div>
+                
+
                 
                
             }
