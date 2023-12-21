@@ -32,16 +32,25 @@
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Admin
+                                    Admin - Posts
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/RemoveUser">Remove User</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/ListPosts">List all BlogPosts</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Admin/NewPost">Add BlogPost</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Admin/ListPosts">List BlogPosts</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin - Tags
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Admin/AddTag">Add Tag</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Admin/ListTag">List Tags</a></li>
                                 </ul>
-                             </li>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/RemoveUser">Remove User</a>
+                            </li>
                         }
                     </ul>
                 <partial name="_LoginPartial"/>

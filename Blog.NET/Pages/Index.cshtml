@@ -4,7 +4,55 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">
+                Temp blog name
+            </h1>
+            <p class="lead">
+                Temp blog description
+            </p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <img src="https://ocdn.eu/pulscms-transforms/1/j6hk9kpTURBXy9lZDgwM2Q5ZGM1NTQ5MGFhZjM0NGEyMmYwMDhhNWI3Ni5qcGeSlQMAzFPNB9DNBGWTBc0EsM0CWN4AAaEwAQ" 
+                 class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="300">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if(Model.Posts == null || Model.Posts.Count == 0)
+            {
+                <p>There are no posts to show.</p>
+            }
+            else
+            {
+                foreach (var blogPost in Model.Posts)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5">
+                        <img src="@blogPost.FeaturedImage" class="mb-2 d-block img-fluid" alt="@blogPost.Heading">
+                        <h2 class="mb-4">@blogPost.Title</h2>
+                        <p class="mb-4">
+                            Author: @blogPost.UserId
+                            <br />
+                            Published on: @blogPost.CreatedAt.ToShortDateString()
+                        </p>
+                        
+                        <p class="mb-4">
+                            @foreach(var tag in blogPost.Tags)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.DisplayName</span>
+                            }
+                        </p>
+                        
+                        <p class="mb-4">@blogPost.Description</p>
+                        <a class="btn btn-dark" href="#">Read more</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 </div>
