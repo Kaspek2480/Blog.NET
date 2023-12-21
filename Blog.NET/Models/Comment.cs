@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Blog.NET.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 // ReSharper disable All
 
 namespace Blog.NET.Models
@@ -12,7 +13,9 @@ namespace Blog.NET.Models
         public string? IPAddress { get; set; }
 
 
-        //Relacja wiele do jednego
+        public string UserId { get; set; }
+        public BlogNETUser User {get;  set;}
+
         public Guid BlogPostId { get; set; }
         public BlogPost BlogPost {  get; set; }
     }
