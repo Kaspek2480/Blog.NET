@@ -16,7 +16,8 @@ public class NewPostModel : PageModel
     private readonly AppDbContext _context;
     private readonly IImageRepository _imageRepository;
 
-    public NewPostModel(AppDbContext context, IHttpContextAccessor httpContextAccessor, IImageRepository imageRepository)
+    public NewPostModel(AppDbContext context, IHttpContextAccessor httpContextAccessor,
+        IImageRepository imageRepository)
     {
         _context = context;
         _imageRepository = imageRepository;
@@ -49,7 +50,7 @@ public class NewPostModel : PageModel
             throw new Exception("User not found");
         }
 
-        var post = new Models.BlogPost()
+        var post = new BlogPost()
         {
             Title = NewPost!.Title!,
             Content = NewPost.RawContent!,
@@ -58,7 +59,6 @@ public class NewPostModel : PageModel
             Visible = NewPost.Visible,
             UserId = blogNetUser.Id,
             User = blogNetUser,
-            FeaturedImage = NewPost.FeaturedImage
         };
 
         //handle tags from form
@@ -73,16 +73,19 @@ public class NewPostModel : PageModel
 
             post.Tags.Add(tagToAdd);
         }
-        
+
         IFormFile? featuredImage = Request.Form.Files["featuredImage"];
-        
-        if(featuredImage != null && featuredImage.Length > 0)
+
+        //handle image upload or use custom url
+        if (featuredImage != null && featuredImage.Length > 0)
         {
-            var imageUrl = _imageRepository.UploadAsync(featuredImage).Result;
-            post.FeaturedImage = imageUrl;
+            var uploadResult = _imageRepository.UploadAsync(featuredImage).Result;
+            post.FeaturedImage = uploadResult.SecureUrl.AbsoluteUri;
         }
-        
-        
+        else
+        {
+            post.FeaturedImage = NewPost!.CustomUrl!;
+        }
 
         Debug.WriteLine("Post: " + post);
         _context.Blogs.Add(post);
