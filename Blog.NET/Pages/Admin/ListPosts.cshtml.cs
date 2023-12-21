@@ -14,7 +14,7 @@ public class ListPostsModel : PageModel
         _context = context;
     }
     
-    public List<BlogPost>? Posts { get; set; }
+    public List<Models.BlogPost>? Posts { get; set; }
     
     public void OnGet()
     {

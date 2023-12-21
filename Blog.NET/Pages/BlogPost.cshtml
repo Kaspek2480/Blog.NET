@@ -1,0 +1,42 @@
+﻿@page
+@using Blog.NET.Models
+@model BlogPostModel
+
+@{
+    ViewData["Title"] = @Model.BlogPost.Title;
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            @if (Model == null)
+            {
+                <p>There is no post to show.</p>
+            }
+            else
+            {
+                <h1 class="display-4">@Model.BlogPost.Title</h1>
+                
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-secondary">@Model.BlogPost.UserId</span>
+                    <span class="text-secondary">@Model.BlogPost.CreatedAt.ToShortDateString()</span>
+                </div>
+                
+                <div class="mb-3 d-flex">
+                    @foreach (var tag in Model.BlogPost.Tags)
+                    {
+                        <span class="badge bg-secondary me-1">@tag.DisplayName</span>
+                    }
+                </div>
+                
+                <img src="@Model.BlogPost.FeaturedImage" class="mb-3 d-block img-fluid" alt="@Model.BlogPost.Title">
+                
+                <div class="mb-3 blog-details-content">
+                    @Html.Raw(Model.BlogPost.Content)
+                </div>
+               
+            }
+        </div>
+    </div>
+</div>
+

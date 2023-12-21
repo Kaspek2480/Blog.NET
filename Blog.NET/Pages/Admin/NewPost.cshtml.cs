@@ -49,7 +49,7 @@ public class NewPostModel : PageModel
             throw new Exception("User not found");
         }
 
-        var post = new BlogPost()
+        var post = new Models.BlogPost()
         {
             Title = NewPost!.Title!,
             Content = NewPost.RawContent!,

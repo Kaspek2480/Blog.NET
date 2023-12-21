@@ -49,7 +49,7 @@
                         </p>
                         
                         <p class="mb-4">@blogPost.Description</p>
-                        <a class="btn btn-dark" href="#">Read more</a>
+                        <a class="btn btn-dark" asp-page="/BlogPost" asp-route-id="@blogPost.Id">Read more</a>
                     </div>
                 }
             }
