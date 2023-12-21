@@ -5,7 +5,7 @@
 @model BlogPostModel
 
 @{
-    ViewData["Title"] = @Model.BlogPost.Title;
+    ViewData["Title"] = @Model.BlogPost!.Title;
 }
 
 <div class="container my-5">
@@ -30,7 +30,7 @@
                 
                 
                 <div class="mb-3 d-flex">
-                    @foreach (var tag in Model.BlogPost.Tags)
+                    @foreach (var tag in Model.BlogPost!.Tags!)
                     {
                         <span class="badge bg-secondary me-1">@tag.DisplayName</span>
                     }

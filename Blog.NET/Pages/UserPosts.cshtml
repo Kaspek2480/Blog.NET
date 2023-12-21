@@ -1,0 +1,17 @@
+@page "/{username}"
+@model UserPosts
+
+@{
+}
+
+<h2>Posty użytkownika @Model.Username</h2>
+
+@if (Model.Posts == null || Model.Posts.Count == 0)
+{
+    <p>Brak postów.</p>
+}
+else
+{
+    //todo
+}
+

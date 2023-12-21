@@ -11,6 +11,7 @@ namespace Blog.NET.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the BlogNETUser class
 public class BlogNETUser : IdentityUser
 {
+    public string Username { get; set; } = null!;
     // Relacja jeden do wielu: jeden użytkownik wiele postów
     public List<BlogPost> BlogPosts { get; set; }
 }
