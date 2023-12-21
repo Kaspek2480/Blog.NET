@@ -1,6 +1,8 @@
 using Blog.NET.Areas.Identity.Data;
-using Blog.NET.Models.ViewModels;
+using Blog.NET.Models;
+using Blog.NET.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Blog.NET.Pages;
@@ -8,25 +10,40 @@ namespace Blog.NET.Pages;
 public class UserPosts : PageModel
 {
     public string? Username { get; set; }
-    public List<UserPost>? Posts { get; set; }
-    
+    public List<BlogPost> Posts { get; set; }
+
+    private readonly IUserPostsRepository _userPostsRepository;
     private readonly UserManager<BlogNETUser> _userManager;
 
-    public UserPosts(UserManager<BlogNETUser> userManager)
+    public UserPosts(IUserPostsRepository userPostsRepository, UserManager<BlogNETUser> userManager)
     {
+        _userPostsRepository = userPostsRepository;
         _userManager = userManager;
+        Posts = new List<BlogPost>();
     }
 
-    public void OnGet(string? username)
+    public IActionResult OnGet(string? username)
     {
+        if (username == null)
+        {
+            return NotFound();
+        }
+
+        var user = GetUserByUsername(username);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         Username = username;
-        // Tutaj umieść kod do pobierania postów użytkownika na podstawie nazwy
-        // i przypisz je do właściwości modelu, aby można było je wyświetlić w widoku
+        Posts = _userPostsRepository.GetUserPosts(user).Result;
+
+        return Page();
     }
-    
-    public BlogNETUser GetUserByUsername(string username)
+
+    public BlogNETUser? GetUserByUsername(string? username)
     {
-        var user = _userManager.Users.Where(u => u.UserName == username).FirstOrDefault();
+        var user = _userManager.Users.FirstOrDefault(u => u.UserName == username);
         return user;
     }
 }

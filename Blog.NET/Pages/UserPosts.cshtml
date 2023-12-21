@@ -6,12 +6,19 @@
 
 <h2>Posty użytkownika @Model.Username</h2>
 
-@if (Model.Posts == null || Model.Posts.Count == 0)
+@if (Model.Posts.Count == 0)
 {
     <p>Brak postów.</p>
 }
 else
 {
-    //todo
+    <ul>
+        @foreach (var post in Model.Posts)
+        {
+            <li>
+                <p>@post.Title</p>
+                <p>@post.Content</p>
+            </li>
+        }
+    </ul>
 }
-
