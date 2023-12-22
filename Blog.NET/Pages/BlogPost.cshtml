@@ -1,6 +1,4 @@
 ﻿@page
-@using Blog.NET.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using System.Security.Claims
 @model BlogPostModel
 
@@ -20,7 +18,7 @@
                 <h1 class="display-4">@Model.BlogPost.Title</h1>
                 
                 <div class="d-flex justify-content-between mb-3">
-                    <span class="text-secondary">@Model.BlogPost.UserId</span>
+                    <span class="text-secondary">@Model.BlogPost.User.UserName</span>
                     <span class="text-secondary">@Model.BlogPost.CreatedAt.ToShortDateString()</span>
                 </div>
                 
@@ -57,11 +55,11 @@
                             <form method="post">
                                 <div class="mb-3">
                                     <label class="form-label">Comment Description</label>
-                                    <input type="text" class="form-control"/> @*asp-for="Comment.Description"*@
+                                    <input type="text" class="form-control" asp-for="Comment!.Content"/> 
                                 </div>
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-dark">Submit</button>
-                                    @*<input type="hidden" asp-for="Comment.BlogPostId" value="@Model.BlogPost.Id"/>*@
+                                    <input type="hidden"/>
                                 </div>
                             </form>
                         }

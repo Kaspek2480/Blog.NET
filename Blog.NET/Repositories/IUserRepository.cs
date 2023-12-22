@@ -4,6 +4,10 @@ using Blog.NET.Models;
 
 namespace Blog.NET.Repositories;
 
-public interface IUserPostsRepository {
+public interface IUserRepository {
     Task<List<BlogPost>> GetUserPosts(BlogNETUser user);
+    
+    Task<BlogNETUser?> GetUserByUsername(string? username);
+    
+    Task<BlogNETUser?> GetCurrentUser();
 }

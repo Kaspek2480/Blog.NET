@@ -12,38 +12,30 @@ public class UserPosts : PageModel
     public string? Username { get; set; }
     public List<BlogPost> Posts { get; set; }
 
-    private readonly IUserPostsRepository _userPostsRepository;
-    private readonly UserManager<BlogNETUser> _userManager;
+    private readonly IUserRepository _userRepository;
 
-    public UserPosts(IUserPostsRepository userPostsRepository, UserManager<BlogNETUser> userManager)
+    public UserPosts(IUserRepository userRepository)
     {
-        _userPostsRepository = userPostsRepository;
-        _userManager = userManager;
+        _userRepository = userRepository;
         Posts = new List<BlogPost>();
     }
 
-    public IActionResult OnGet(string? username)
+    public async Task<IActionResult> OnGet(string? username)
     {
         if (username == null)
         {
             return NotFound();
         }
 
-        var user = GetUserByUsername(username);
+        var user = _userRepository.GetUserByUsername(username).Result;
         if (user == null)
         {
             return NotFound();
         }
 
         Username = username;
-        Posts = _userPostsRepository.GetUserPosts(user).Result;
+        Posts = await _userRepository.GetUserPosts(user);
 
         return Page();
-    }
-
-    public BlogNETUser? GetUserByUsername(string? username)
-    {
-        var user = _userManager.Users.FirstOrDefault(u => u.UserName == username);
-        return user;
     }
 }

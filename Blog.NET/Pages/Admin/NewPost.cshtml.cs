@@ -15,27 +15,26 @@ public class NewPostModel : PageModel
 {
     private readonly AppDbContext _context;
     private readonly IImageRepository _imageRepository;
+    private readonly IUserRepository _userRepository;
 
-    public NewPostModel(AppDbContext context, IHttpContextAccessor httpContextAccessor,
-        IImageRepository imageRepository)
+    public NewPostModel(AppDbContext context,
+        IImageRepository imageRepository, IUserRepository userRepository)
     {
         _context = context;
         _imageRepository = imageRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _userRepository = userRepository;
     }
 
     [BindProperty] public NewPost? NewPost { get; set; }
 
     public List<Tag>? AvailableTags { get; set; }
 
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
     public void OnGet()
     {
         AvailableTags = _context.Tags.ToList();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPost()
     {
         if (!ModelState.IsValid)
         {
@@ -43,7 +42,7 @@ public class NewPostModel : PageModel
             return Page();
         }
 
-        var blogNetUser = GetCurrentUser();
+        var blogNetUser = await _userRepository.GetCurrentUser();
         if (blogNetUser == null)
         {
             //should never happen
@@ -94,7 +93,7 @@ public class NewPostModel : PageModel
     }
 
     //TODO: move to service / utility class
-    public BlogNETUser GetCurrentUser()
+    /*public BlogNETUser GetCurrentUser()
     {
         if (_httpContextAccessor.HttpContext == null || _context.Users == null)
         {
@@ -104,5 +103,5 @@ public class NewPostModel : PageModel
         var userId = _httpContextAccessor.HttpContext.User.Claims.First().Value;
         return _context.Users.FirstOrDefault(u => u.Id == userId) ??
                throw new InvalidOperationException("User not found");
-    }
+    }*/
 }
