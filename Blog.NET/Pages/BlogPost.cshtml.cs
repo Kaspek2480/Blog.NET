@@ -30,11 +30,9 @@ public class BlogPostModel : PageModel
         var post = await _context.Blogs.Include(blogPost => blogPost.Tags).FirstOrDefaultAsync(p => Equals(p.Id, id));
         if (post == null) return NotFound();
 
-        BlogPost = post; //post user is null
+        BlogPost = post; //FIXME: User object in BlogPost is null
         TotalLikes = await _blogPostLikeRepository.GetTotalLikes(id);
         
-        //to be fixed
-
         return Page();
     }
     
