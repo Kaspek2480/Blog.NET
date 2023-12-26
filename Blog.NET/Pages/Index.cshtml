@@ -3,6 +3,14 @@
 @{
     ViewData["Title"] = "Home page";
 }
+@using Blog.NET.Areas.Identity.Data;
+@using Blog.NET.Models;
+@functions {
+    public BlogNETUser GetUserById(string userId)
+    {
+        return Model._userManager.FindByIdAsync(userId).Result;
+    }
+}
 
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row align-items-center g-5 py-5">
@@ -10,9 +18,9 @@
             <h1 class="display-5 fw-bold lh-1 mb-3">
                 Temp blog name
             </h1>
-            <p class="lead">
                 Temp blog description
             </p>
+            <p class="lead">
         </div>
         <div class="col-12 col-lg-6">
             <img src="https://ocdn.eu/pulscms-transforms/1/j6hk9kpTURBXy9lZDgwM2Q5ZGM1NTQ5MGFhZjM0NGEyMmYwMDhhNWI3Ni5qcGeSlQMAzFPNB9DNBGWTBc0EsM0CWN4AAaEwAQ" 
@@ -54,7 +62,7 @@
                         <img src="@blogPost.FeaturedImage" class="mb-2 d-block img-fluid" alt="@blogPost.Heading">
                         <h2 class="mb-4">@blogPost.Title</h2>
                         <p class="mb-4">
-                            Author: @blogPost.UserId
+                            Author: @(GetUserById(blogPost.UserId)?.UserName)
                             <br />
                             Published on: @blogPost.CreatedAt.ToShortDateString()
                         </p>
