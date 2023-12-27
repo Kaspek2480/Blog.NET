@@ -48,8 +48,6 @@ public class BlogPostModel : PageModel
 
     public async Task<IActionResult> OnPostCommentAdd()
     {
-        if (!ModelState.IsValid) return Page();
-
         var user = await _userRepository.GetCurrentUser();
         if (user == null) return NotFound();
 

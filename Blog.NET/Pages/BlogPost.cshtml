@@ -3,7 +3,11 @@
 @model BlogPostModel
 
 @{
-    ViewData["Title"] = @Model.BlogPost!.Title;
+    @if (Model.BlogPost != null)
+    {
+        ViewData["Title"] = @Model.BlogPost!.Title;
+    }
+
 }
 
 <div class="container my-5">
@@ -76,7 +80,7 @@
                                                             <button type="submit" class="btn btn-danger btn-sm" asp-route-id="@comment.Id" asp-page-handler="commentDelete">Delete</button>
                                                         </form>
                                                     </div>*@
-                                                    
+
                                                     <form method="post" asp-page-handler="commentDelete">
                                                         <div class="mb-3">
                                                             <input type="hidden" asp-for="DeleteComment!.BlogPostId" value="@Model.BlogPost.Id"/>

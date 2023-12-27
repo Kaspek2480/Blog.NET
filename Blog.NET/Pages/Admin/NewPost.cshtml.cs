@@ -88,7 +88,7 @@ public class NewPostModel : PageModel
 
         Debug.WriteLine("Post: " + post);
         _context.Blogs.Add(post);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return RedirectToPage("/Index");
     }
 

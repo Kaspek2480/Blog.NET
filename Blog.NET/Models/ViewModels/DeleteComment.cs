@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace Blog.NET.Models.ViewModels;
 
 public class DeleteComment
 {
