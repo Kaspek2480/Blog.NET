@@ -76,7 +76,39 @@
 {
     <script>
         var editor = new FroalaEditor('#content', {
-            height: 300
-        })
+            height: 300,
+            //handle url uploads
+            imageUploadURL: '/Admin/UploadFile',
+            imageUploadMethod: 'POST',
+            imageAllowedTypes: ['jpeg', 'jpg', 'png'],
+            imageMaxSize: 5 * 1024 * 1024,
+            imageDefaultWidth: 0,
+            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove'],
+            imageInsertButtons: ['imageBack', '|', 'imageUpload', 'imageByURL'],
+            events: {
+                'image.uploaded': function (response) {
+                    let jsonResponse = JSON.parse(response);
+                    console.log(jsonResponse);
+                    // Image was inserted in the editor.
+                    
+                },
+                'image.inserted': function ($img, response) {
+                    // Image was inserted in the editor.
+                },
+                'image.removed': function ($img) {
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+            
+                      // Image was removed.
+                      //TODO maybe any callbacks if available
+                      if (this.readyState === 4 && this.status === 200) {
+                         console.log ('image was deleted');
+                   }
+                  };
+                  xhttp.open("DELETE", "http://localhost:5219/Admin/UploadFile?url=" + $img.attr('src'), true);
+                  xhttp.send();
+            }
+        }
+        });
     </script>
 }

@@ -37,4 +37,15 @@ public class CloudinaryImageRepository : IImageRepository
 
         throw new Exception("Error uploading image");
     }
+
+    public async Task<DeletionResult> DeleteAsync(string publicId)
+    {
+        var client = new Cloudinary(_account);
+
+        var deleteParams = new DeletionParams(publicId);
+
+        var deleteResult = await client.DestroyAsync(deleteParams);
+
+        return deleteResult;
+    }
 }

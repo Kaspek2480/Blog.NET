@@ -78,7 +78,7 @@ public class NewPostModel : PageModel
         //handle image upload or use custom url
         if (featuredImage != null && featuredImage.Length > 0)
         {
-            var uploadResult = _imageRepository.UploadAsync(featuredImage).Result;
+            var uploadResult = await _imageRepository.UploadAsync(featuredImage);
             post.FeaturedImage = uploadResult.SecureUrl.AbsoluteUri;
         }
         else

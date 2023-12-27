@@ -76,8 +76,19 @@
             
         })
         
+        $('.selector')
+          .froalaEditor()
+          .on('froalaEditor.image.uploaded', function (e, editor, response) {
+            // Parse response to get image url.
+            var img_url = "https://m.natemat.pl/8aa8fd7ef24eec182136b63bbd9985ec,0,0,0,0.jpg";
         
-        document.getElementById('featuredImageUpload').addEventListener('change', function () {
+            // Insert image.
+            editor.image.insert(img_url, false, null, editor.image.get(), response);
+        
+            return false;
+          });
+        
+        /*document.getElementById('featuredImageUpload').addEventListener('change', function () {
             var input = this;
             var imgPreview = document.getElementById('featuredImagePreview');
             var imageURLInput = document.getElementById('featuredImageURL');
@@ -93,7 +104,7 @@
                 
                 imageURLInput.value = '@ViewData["FeaturedImageURL"]';
             }
-        });
+        });*/
         
     </script>
 }
