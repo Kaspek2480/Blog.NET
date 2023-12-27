@@ -72,39 +72,38 @@
     <script>
         var editor = new FroalaEditor('#content', {
             height: 300,
-            imageUploadURL: '/Admin/UploadImage',
+            //handle url uploads
+            imageUploadURL: '/Admin/UploadFile',
+            imageUploadMethod: 'POST',
+            imageAllowedTypes: ['jpeg', 'jpg', 'png'],
+            imageMaxSize: 5 * 1024 * 1024,
+            imageDefaultWidth: 0,
+            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove'],
+            imageInsertButtons: ['imageBack', '|', 'imageUpload', 'imageByURL'],
+            events: {
+                'image.uploaded': function (response) {
+                    let jsonResponse = JSON.parse(response);
+                    console.log(jsonResponse);
+                    // Image was inserted in the editor.
+                    
+                },
+                'image.inserted': function ($img, response) {
+                    // Image was inserted in the editor.
+                },
+                'image.removed': function ($img) {
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
             
-        })
-        
-        $('.selector')
-          .froalaEditor()
-          .on('froalaEditor.image.uploaded', function (e, editor, response) {
-            // Parse response to get image url.
-            var img_url = "https://m.natemat.pl/8aa8fd7ef24eec182136b63bbd9985ec,0,0,0,0.jpg";
-        
-            // Insert image.
-            editor.image.insert(img_url, false, null, editor.image.get(), response);
-        
-            return false;
-          });
-        
-        /*document.getElementById('featuredImageUpload').addEventListener('change', function () {
-            var input = this;
-            var imgPreview = document.getElementById('featuredImagePreview');
-            var imageURLInput = document.getElementById('featuredImageURL');
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    imgPreview.src = e.target.result;
-                };
-
-                reader.readAsDataURL(input.files[0]);
-                
-                imageURLInput.value = '@ViewData["FeaturedImageURL"]';
+                      // Image was removed.
+                      //TODO maybe any callbacks if available
+                      if (this.readyState === 4 && this.status === 200) {
+                         console.log ('image was deleted');
+                   }
+                  };
+                  xhttp.open("DELETE", "http://localhost:5219/Admin/UploadFile?url=" + $img.attr('src'), true);
+                  xhttp.send();
             }
-        });*/
-        
+        }
+        });
     </script>
 }
