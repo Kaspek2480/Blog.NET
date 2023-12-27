@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Blog.NET.Data;
 using Blog.NET.Models;
+using Blog.NET.Models.ViewModels;
 using Blog.NET.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,11 +15,12 @@ public class BlogPostModel : PageModel
     private readonly IBlogPostLikeRepository _blogPostLikeRepository;
     private readonly IUserRepository _userRepository;
 
-    [BindProperty] public BlogPost? BlogPost { get; set; }
-    [BindProperty] public int TotalLikes { get; set; }
-    [BindProperty] public Comment? Comment { get; set; }
+    public BlogPost? BlogPost { get; set; }
+    public int TotalLikes { get; set; }
+    [BindProperty] public NewComment? NewComment { get; set; }
+    [BindProperty] public DeleteComment? DeleteComment { get; set; }
 
-    [BindProperty] public List<Comment>? Comments { get; set; }
+    public List<Comment>? Comments { get; set; }
 
 
     public BlogPostModel(AppDbContext context, IBlogPostLikeRepository blogPostLikeRepository,
@@ -36,41 +38,55 @@ public class BlogPostModel : PageModel
 
         Comments = await _context.Comments.Include(comment => comment.User).Where(comment => comment.BlogPostId == id)
             .OrderByDescending(comment => comment.CreatedAt).ToListAsync();
-        
-       
+
+
         BlogPost = post; //FIXME: User object in BlogPost is null
         TotalLikes = await _blogPostLikeRepository.GetTotalLikes(id);
 
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAdd()
+    public async Task<IActionResult> OnPostCommentAdd()
     {
-        //if (!ModelState.IsValid) return Page();
-        
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!ModelState.IsValid) return Page();
+
         var user = await _userRepository.GetCurrentUser();
         if (user == null) return NotFound();
-        
-        Comment.UserId = userId;
-        //Comment.User = user;
-        Comment.CreatedAt = DateTime.Now;
-        Comment.IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-        Comment.BlogPostId = BlogPost.Id;
-        await _context.Comments.AddAsync(Comment);
+
+        var post = await _context.Blogs.FirstOrDefaultAsync(p => Equals(p.Id, NewComment!.BlogPostId));
+        if (post == null) return NotFound();
+
+        var comment = new Comment()
+        {
+            Content = NewComment!.RawContent!,
+            CreatedAt = DateTime.Now,
+            IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+            User = user,
+            BlogPost = post
+        };
+
+        await _context.Comments.AddAsync(comment);
         await _context.SaveChangesAsync();
-        
-        return RedirectToPage("/BlogPost", new { id = Comment.BlogPostId });
+
+        return RedirectToPage("/BlogPost", new { id = NewComment.BlogPostId });
     }
 
-    public async Task<IActionResult> OnPostDelete()
+    public async Task<IActionResult> OnPostCommentDelete()
     {
-        var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == Comment.Id);
+        var comment = await _context.Comments.Include(comment => comment.User)
+            .FirstOrDefaultAsync(c => c.Id == DeleteComment!.Id);
         if (comment == null) return NotFound();
-        
+
+        var currentUser = await _userRepository.GetCurrentUser();
+
+        if (!Equals(currentUser, comment.User) || !User.IsInRole("Admin"))
+        {
+            return RedirectToPage("/Error", new { message = "You are not allowed to delete this comment" });
+        }
+
         _context.Comments.Remove(comment);
         await _context.SaveChangesAsync();
-        
+
         return RedirectToPage("/BlogPost", new { id = comment.BlogPostId });
     }
 }
