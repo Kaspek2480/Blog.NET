@@ -1,0 +1,65 @@
+@page "/{username}"
+@model UserPosts
+
+@{
+}
+
+<h2>Posts of @Model.Username</h2>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if (Model.Posts.Count == 0)
+            {
+                <p>There are no posts to show.</p>
+            }
+            else
+            {
+                @foreach (var blogPost in Model.Posts)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5">
+                        <img src="@blogPost.FeaturedImage" class="mb-2 d-block img-fluid" alt="@blogPost.Heading">
+                        <h2 class="mb-4">@blogPost.Title</h2>
+                        <p class="mb-4">
+                            Author: @Model.Username
+                            <br />
+                            Published on: @blogPost.CreatedAt.ToShortDateString()
+                        </p>
+                        <p class="mb-4">
+                            @foreach(var tag in blogPost.Tags)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.DisplayName</span>
+                            }
+                        </p>
+                        
+                        <p class="mb-4">@blogPost.Description</p>
+                        <a class="btn btn-dark" asp-page-handler="update" asp-page="/BlogPost" asp-route-id="@blogPost.Id">Read more</a>
+                    </div>
+                }
+                
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (i == Model.CurrentPage)
+                    {
+                        <span>@i</span>
+                    }
+                    else
+                    {
+                        <a href="/@Model.Username?page=@i">@i</a>
+                    }
+                }
+                
+                @if (Model.CurrentPage > 1)
+                {
+                    <a href="/@Model.Username?page=@(Model.CurrentPage - 1)">Previous</a>
+                }
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a href="/@Model.Username?page=@(Model.CurrentPage + 1)">Next</a>
+                }
+            }
+        </div>
+    </div>
+</div>

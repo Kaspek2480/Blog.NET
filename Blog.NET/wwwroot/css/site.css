@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.blog-details-content img {
+  max-width: 100%;
+}
+
+.logo {
+    max-height: 90%;
+    max-width: 90%;
+}

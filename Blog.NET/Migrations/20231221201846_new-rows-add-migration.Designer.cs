@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.NET.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231217143024_NowaMigracja")]
-    partial class NowaMigracja
+    [Migration("20231221201846_new-rows-add-migration")]
+    partial class newrowsaddmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,6 @@ namespace Blog.NET.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("FeaturedImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Heading")
@@ -102,6 +101,9 @@ namespace Blog.NET.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("UpvotesCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("UrlHandle")
                         .IsRequired()
@@ -138,12 +140,17 @@ namespace Blog.NET.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("IPAddress")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BlogPostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -155,11 +162,9 @@ namespace Blog.NET.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -311,7 +316,15 @@ namespace Blog.NET.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Blog.NET.Areas.Identity.Data.BlogNETUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("BlogPost");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BlogPostTag", b =>

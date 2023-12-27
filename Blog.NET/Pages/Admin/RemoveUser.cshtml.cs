@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+
 using Blog.NET.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.NET.Pages.Admin;
+[Authorize(Roles = "Admin")]
 public class RemoveUserModel : PageModel
 {
+    
     private readonly UserManager<BlogNETUser> _userManager;
     private readonly ILogger<RemoveUserModel> _logger;
 
@@ -22,28 +25,24 @@ public class RemoveUserModel : PageModel
     public IActionResult OnPost(string userEmail)
     {
         var user = _userManager.FindByEmailAsync(userEmail).Result;
+        if (user == null) return NotFound();
 
-        if (user != null)
+        // Usuï¿½ uï¿½ytkownika
+        var result = _userManager.DeleteAsync(user).Result;
+
+        if (result.Succeeded)
         {
-            // Usuñ u¿ytkownika
-            var result = _userManager.DeleteAsync(user).Result;
-
-            if (result.Succeeded)
-            {
-                // Obs³u¿ sukces
-                return RedirectToPage("/ConfirmRemoveUser");
-            }
-            else
-            {
-                // Obs³u¿ b³êdy usuwania u¿ytkownika
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
+            // Obsï¿½uï¿½ sukces
+            return RedirectToPage("/ConfirmRemoveUser");
         }
 
-        // Obs³u¿ sytuacjê, gdy u¿ytkownik nie zosta³ znaleziony
+        // Obsï¿½uï¿½ bï¿½ï¿½dy usuwania uï¿½ytkownika
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        // Obsï¿½uï¿½ sytuacjï¿½, gdy uï¿½ytkownik nie zostaï¿½ znaleziony
         return NotFound();
     }
 }

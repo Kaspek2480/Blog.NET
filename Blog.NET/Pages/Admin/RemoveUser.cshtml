@@ -1,14 +1,22 @@
 ﻿@page
 @model RemoveUserModel
 
-<h2>Remove User</h2>
-
-<form method="post">
-    <div class="form-group">
-        <label for="inputEmail">User's Email:</label>
-        <input type="email" class="form-control" id="inputEmail" name="UserEmail" placeholder="Enter user's email" required>
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="display-4">Remove User</h1>
     </div>
+</div>
 
-    <button type="submit" class="btn btn-danger">Confirm Remove</button>
-    <a asp-page="/Index" class="btn btn-secondary">Cancel</a>
-</form>
+<div class="container py-5">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label" for="inputEmail">User's Email:</label>
+            <input type="email" class="form-control" id="inputEmail" name="UserEmail" placeholder="Enter user's email" required>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-danger">Confirm Remove</button>
+            <a asp-page="/Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

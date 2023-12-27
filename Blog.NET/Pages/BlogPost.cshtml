@@ -1,0 +1,155 @@
+﻿@page
+@using System.Security.Claims
+@using Blog.NET.Areas.Identity.Data
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model BlogPostModel
+
+@{
+    @if (Model.BlogPost != null)
+    {
+        ViewData["Title"] = @Model.BlogPost!.Title;
+    }
+
+}
+@functions {
+    public BlogNETUser GetUserById(string userId)
+    {
+        return Model._userManager.FindByIdAsync(userId).Result;
+    }
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            @if (Model == null)
+            {
+                <p>There is no post to show.</p>
+            }
+            else
+            {
+                <div class="blog-header text-center mb-5">
+                    <h1 class="display-4">@Model.BlogPost.Title</h1>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-secondary">
+                            Posted by <a href="/@(GetUserById(Model.BlogPost.UserId)?.UserName)">
+                                @GetUserById(Model.BlogPost.UserId)?.UserName
+                            </a>
+                        </span>
+                        <span class="text-secondary">@Model.BlogPost.CreatedAt.ToLongDateString()</span>
+                    </div>
+                    <div class="mb-3 d-flex">
+                        @foreach (var tag in Model.BlogPost!.Tags!)
+                        {
+                            <span class="badge bg-secondary me-1">@tag.DisplayName</span>
+                        }
+                    </div>
+                    <img src="@Model.BlogPost.FeaturedImage" class="mb-4 d-block img-fluid rounded" alt="@Model.BlogPost.Title">
+                </div>
+
+                <div class="blog-content mb-4">
+                    @Html.Raw(Model.BlogPost.Content)
+                </div>
+
+                <div class="blog-footer">
+                    <div class="mb-3">
+                        <span class="badge bg-primary">@Model.TotalLikes</span> likes
+                    </div>
+
+                    @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.BlogPost.UserId || User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-dark" asp-page="/Admin/EditPost" asp-route-id="@Model.BlogPost.Id">Edit Post</a>
+                    }
+                </div>
+
+                <div class="card mt-5">
+                    <div class="card-header bg-dark text-light">
+                        <h5>Comments</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.Comments == null || Model.Comments.Count == 0)
+                        {
+                            <p>No comments yet. Be the first to comment!</p>
+                        }
+                        else
+                        {
+                            foreach (var comment in Model.Comments)
+                            {
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <p class="comment-content">@comment.Content</p>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-secondary">@comment.User</span>
+                                            <span class="text-secondary">@comment.CreatedAt.ToLongDateString()</span>
+                                        </div>
+                                        @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.UserId || User.IsInRole("Admin"))
+                                        {
+                                            <form method="post" asp-page-handler="commentDelete">
+                                                <input type="hidden" asp-for="DeleteComment!.BlogPostId" value="@Model.BlogPost.Id" />
+                                                <input type="hidden" asp-for="DeleteComment!.Id" value="@comment.Id" />
+                                                <button type="submit" class="btn btn-danger btn-sm mt-3">Delete</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="card-footer">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-page-handler="commentAdd">
+                                <div class="mb-3">
+                                    <label class="form-label">Leave a Comment</label>
+                                    <input type="text" class="form-control" asp-for="NewComment!.RawContent" />
+                                    <input type="hidden" asp-for="NewComment!.BlogPostId" value="@Model.BlogPost.Id" />
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>You must be logged in to comment.</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .blog-header h1 {
+        color: #333;
+    }
+
+    .blog-header img {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+        .blog-header img:hover {
+            transform: scale(1.05);
+        }
+
+    .blog-content {
+        line-height: 1.6;
+        font-size: 1.1rem;
+        color: #555;
+    }
+
+    .blog-footer .badge {
+        font-size: 1rem;
+    }
+
+    .comment-content {
+        font-size: 1.1rem;
+    }
+
+    .card-footer p {
+        font-style: italic;
+        color: #777;
+    }
+</style>

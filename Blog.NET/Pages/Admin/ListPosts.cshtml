@@ -1,0 +1,54 @@
+﻿@page
+@model ListPostsModel
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="display-4">List of all posts</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    @if(Model.Posts == null || Model.Posts.Count == 0)
+    {
+        <p>There are no posts to show.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created at</th>
+                <th>Tags</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var post in Model.Posts)
+            {
+                <tr>
+                    <td>@post.Title</td>
+                    <td>@post.Description</td>
+                    <td>@post.CreatedAt</td>
+                    <td>
+                        <div class="d-flex">
+                            @foreach(var tag in post.Tags)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.DisplayName</span>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-area="" asp-page="/Admin/EditPost" asp-route-id="@post.Id">Edit</a>
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+            
+        </table>
+    }
+
+</div>
