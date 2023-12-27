@@ -44,7 +44,7 @@ public class BlogPostModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPostAdd()
     {
         //if (!ModelState.IsValid) return Page();
         
@@ -61,5 +61,16 @@ public class BlogPostModel : PageModel
         await _context.SaveChangesAsync();
         
         return RedirectToPage("/BlogPost", new { id = Comment.BlogPostId });
+    }
+
+    public async Task<IActionResult> OnPostDelete()
+    {
+        var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == Comment.Id);
+        if (comment == null) return NotFound();
+        
+        _context.Comments.Remove(comment);
+        await _context.SaveChangesAsync();
+        
+        return RedirectToPage("/BlogPost", new { id = comment.BlogPostId });
     }
 }

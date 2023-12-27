@@ -68,6 +68,19 @@
                                                 <span class="text-secondary">@comment.User</span>
                                                 <span class="text-secondary">@comment.CreatedAt.ToShortDateString()</span>
                                             </div>
+                                            <div>
+                                                @if(User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.UserId || User.IsInRole("Admin"))
+                                                {
+                                                    <div class="mt-3">
+                                                        <form method="post" asp-page-handler="deleteComment">
+                                                            <input type="hidden" asp-for="Comment!.Id" value="@comment.Id"/>
+                                                            <button type="submit" class="btn btn-danger btn-sm" asp-page-handler="delete">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                    
+                                                }
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                 }
@@ -84,7 +97,7 @@
                                     <input type="text" class="form-control" asp-for="Comment!.Content"/>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                    <button type="submit" class="btn btn-dark" asp-page-handler="add">Submit</button>
                                 </div>
                             </form>
                         }
