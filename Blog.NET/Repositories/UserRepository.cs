@@ -23,7 +23,8 @@ public class UserRepository : IUserRepository
 
     public async Task<List<BlogPost>> GetUserPosts(BlogNETUser user)
     {
-        var blogPosts = _context.Blogs.Where(b => b.UserId == user.Id);
+        var blogPosts = _context.Blogs.Where(b => b.UserId == user.Id).OrderByDescending(b => b.CreatedAt);
+        
         return await blogPosts.ToListAsync();
     }
 
