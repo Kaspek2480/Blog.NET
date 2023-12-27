@@ -32,7 +32,11 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        Posts = _context.Blogs.Include(b => b.Tags).OrderByDescending(p => p.CreatedAt).ToList();
+        Posts = _context.Blogs
+            .Include(b => b.Tags)
+            .Where(p => p.Visible)
+            .OrderByDescending(p => p.CreatedAt)
+            .ToList();
         Tags = _context.Tags.ToList();
     }
 

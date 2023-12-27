@@ -30,7 +30,9 @@
                 <h1 class="display-4">@Model.BlogPost.Title</h1>
 
                 <div class="d-flex justify-content-between mb-3">
-                    <span class="text-secondary">@GetUserById(Model.BlogPost.UserId)?.UserName</span>
+                    <span class="text-secondary"><a href="/@(GetUserById(Model.BlogPost.UserId)?.UserName)">
+                        @GetUserById(Model.BlogPost.UserId)?.UserName
+                    </a></span>
                     <span class="text-secondary">@Model.BlogPost.CreatedAt.ToShortDateString()</span>
                 </div>
 

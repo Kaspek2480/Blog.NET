@@ -26,17 +26,6 @@
                             <br />
                             Published on: @blogPost.CreatedAt.ToShortDateString()
                         </p>
-                        
-                        <div class="mb-3">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <a id="btn-Like" style="cursor: pointer">
-                                    <i id="thumbsUpIcon" class="bi bi-hand-thumbs-up"></i>
-                                </a> 
-                            }
-                            <span>x</span> likes
-                        </div>
-                        
                         <p class="mb-4">
                             @foreach(var tag in blogPost.Tags)
                             {
@@ -47,6 +36,28 @@
                         <p class="mb-4">@blogPost.Description</p>
                         <a class="btn btn-dark" asp-page-handler="update" asp-page="/BlogPost" asp-route-id="@blogPost.Id">Read more</a>
                     </div>
+                }
+                
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (i == Model.CurrentPage)
+                    {
+                        <span>@i</span>
+                    }
+                    else
+                    {
+                        <a href="/@Model.Username?page=@i">@i</a>
+                    }
+                }
+                
+                @if (Model.CurrentPage > 1)
+                {
+                    <a href="/@Model.Username?page=@(Model.CurrentPage - 1)">Previous</a>
+                }
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a href="/@Model.Username?page=@(Model.CurrentPage + 1)">Next</a>
                 }
             }
         </div>
