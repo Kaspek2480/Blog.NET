@@ -1,8 +1,10 @@
 ﻿using System.Security.Claims;
+using Blog.NET.Areas.Identity.Data;
 using Blog.NET.Data;
 using Blog.NET.Models;
 using Blog.NET.Models.ViewModels;
 using Blog.NET.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -19,16 +21,18 @@ public class BlogPostModel : PageModel
     public int TotalLikes { get; set; }
     [BindProperty] public NewComment? NewComment { get; set; }
     [BindProperty] public DeleteComment? DeleteComment { get; set; }
+    public readonly UserManager<BlogNETUser> _userManager;
 
     public List<Comment>? Comments { get; set; }
 
 
     public BlogPostModel(AppDbContext context, IBlogPostLikeRepository blogPostLikeRepository,
-        IUserRepository userRepository)
+        IUserRepository userRepository, UserManager<BlogNETUser> userManager)
     {
         _context = context;
         _blogPostLikeRepository = blogPostLikeRepository;
         _userRepository = userRepository;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> OnGet(Guid id)

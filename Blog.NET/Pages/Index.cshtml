@@ -70,16 +70,6 @@
                             Published on: @blogPost.CreatedAt.ToShortDateString()
                         </p>
                         
-                        <div class="mb-3">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <a id="btn-Like" style="cursor: pointer">
-                                    <i id="thumbsUpIcon" class="bi bi-hand-thumbs-up"></i>
-                                </a> 
-                            }
-                            <span>x</span> likes
-                        </div>
-                        
                         <p class="mb-4">
                             @foreach(var tag in blogPost.Tags)
                             {
@@ -95,21 +85,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts
-{
-<script>
-        const btnLike = document.getElementById("btn-Like");
-        const thumbsUpIcon = document.getElementById("thumbsUpIcon");
-
-        btnLike.addEventListener("click", () => {
-            if (thumbsUpIcon.classList.contains("bi-hand-thumbs-up")) {
-                thumbsUpIcon.classList.remove("bi-hand-thumbs-up");
-                thumbsUpIcon.classList.add("bi-hand-thumbs-up-fill");
-            } else {
-                thumbsUpIcon.classList.remove("bi-hand-thumbs-up-fill");
-                thumbsUpIcon.classList.add("bi-hand-thumbs-up");
-            }
-        });
-    </script>
-}
