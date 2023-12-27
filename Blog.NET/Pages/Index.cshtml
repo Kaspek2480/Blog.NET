@@ -62,7 +62,10 @@
                         <img src="@blogPost.FeaturedImage" class="mb-2 d-block img-fluid" alt="@blogPost.Heading">
                         <h2 class="mb-4">@blogPost.Title</h2>
                         <p class="mb-4">
-                            Author: @(GetUserById(blogPost.UserId)?.UserName)
+                            Author: 
+                                <td>
+                                    <a href="/@(GetUserById(blogPost.UserId)?.UserName)">@GetUserById(blogPost.UserId)?.UserName</a>
+                                </td>
                             <br />
                             Published on: @blogPost.CreatedAt.ToShortDateString()
                         </p>
