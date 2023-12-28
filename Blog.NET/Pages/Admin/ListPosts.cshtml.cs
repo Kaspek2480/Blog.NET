@@ -22,6 +22,9 @@ public class ListPostsModel : PageModel
     
     public void OnGet()
     {
-        Posts = _context.Blogs.OrderByDescending(p => p.CreatedAt).ToList();
+            Posts = _context.Blogs
+        .Include(p => p.Tags) // Include the Tags
+        .OrderByDescending(p => p.CreatedAt)
+        .ToList();
     }
 }
