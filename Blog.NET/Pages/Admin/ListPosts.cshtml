@@ -1,5 +1,14 @@
 ﻿@page
+@using Blog.NET.Areas.Identity.Data
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ListPostsModel
+
+@functions {
+    public BlogNETUser GetUserById(string userId)
+    {
+        return Model._userManager.FindByIdAsync(userId).Result;
+    }
+}
 
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
@@ -18,6 +27,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
+                <th>Author</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Created at</th>
@@ -29,12 +39,15 @@
             @foreach (var post in Model.Posts)
             {
                 <tr>
+                    <td>
+                        <a href="/@GetUserById(post.UserId)">@GetUserById(post.UserId)?.UserName</a>
+                    </td>
                     <td>@post.Title</td>
                     <td>@post.Description</td>
                     <td>@post.CreatedAt</td>
                     <td>
                         <div class="d-flex">
-                            @foreach(var tag in post.Tags)
+                            @foreach (var tag in post.Tags)
                             {
                                 <span class="badge bg-secondary me-1">@tag.DisplayName</span>
                             }
@@ -43,12 +56,9 @@
                     <td>
                         <a asp-area="" asp-page="/Admin/EditPost" asp-route-id="@post.Id">Edit</a>
                     </td>
-
                 </tr>
             }
             </tbody>
-            
         </table>
     }
-
 </div>

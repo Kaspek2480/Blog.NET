@@ -27,8 +27,10 @@ public class UserPosts : PageModel
         Posts = new List<BlogPost>();
     }
 
-    public async Task<IActionResult> OnGet(string? username, int page = 1)
+    public async Task<IActionResult> OnGet(string? username, [FromQuery] int page)
     {
+        page = page < 1 ? 1 : page;
+        
         if (username == null)
         {
             return NotFound();
@@ -49,7 +51,7 @@ public class UserPosts : PageModel
         
         Posts = _context.Blogs
             .Include(b => b.Tags)
-            .Where(p => p.Visible && p.UserId == user.Id)
+            .Where(p => p.UserId == user.Id)
             .OrderByDescending(p => p.CreatedAt)
             .Skip(skip)
             .Take(PageSize)

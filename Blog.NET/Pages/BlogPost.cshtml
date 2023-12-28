@@ -51,9 +51,6 @@
                 </div>
 
                 <div class="blog-footer">
-                    <div class="mb-3">
-                        <span class="badge bg-primary">@Model.TotalLikes</span> likes
-                    </div>
 
                     @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.BlogPost.UserId || User.IsInRole("Admin"))
                     {

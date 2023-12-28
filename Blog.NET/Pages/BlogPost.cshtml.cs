@@ -14,11 +14,9 @@ namespace Blog.NET.Pages;
 public class BlogPostModel : PageModel
 {
     private readonly AppDbContext _context;
-    private readonly IBlogPostLikeRepository _blogPostLikeRepository;
     private readonly IUserRepository _userRepository;
 
     public BlogPost? BlogPost { get; set; }
-    public int TotalLikes { get; set; }
     [BindProperty] public NewComment? NewComment { get; set; }
     [BindProperty] public DeleteComment? DeleteComment { get; set; }
     public readonly UserManager<BlogNETUser> _userManager;
@@ -26,11 +24,9 @@ public class BlogPostModel : PageModel
     public List<Comment>? Comments { get; set; }
 
 
-    public BlogPostModel(AppDbContext context, IBlogPostLikeRepository blogPostLikeRepository,
-        IUserRepository userRepository, UserManager<BlogNETUser> userManager)
+    public BlogPostModel(AppDbContext context, IUserRepository userRepository, UserManager<BlogNETUser> userManager)
     {
         _context = context;
-        _blogPostLikeRepository = blogPostLikeRepository;
         _userRepository = userRepository;
         _userManager = userManager;
     }
@@ -45,7 +41,7 @@ public class BlogPostModel : PageModel
 
 
         BlogPost = post; //FIXME: User object in BlogPost is null
-        TotalLikes = await _blogPostLikeRepository.GetTotalLikes(id);
+        
 
         return Page();
     }

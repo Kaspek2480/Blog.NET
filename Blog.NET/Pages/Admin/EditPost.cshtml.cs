@@ -98,7 +98,7 @@ public class EditPostModel : PageModel
 
         _context.Blogs.Remove(post);
         await _context.SaveChangesAsync();
-
-        return Redirect(ReferrerUrl);
+        
+        return RedirectToPage("/Index");
     }
 }

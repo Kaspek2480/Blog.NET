@@ -12,14 +12,12 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
     private readonly AppDbContext _context;
-    private readonly IBlogPostLikeRepository _blogPostLikeRepository;
     public readonly UserManager<BlogNETUser> _userManager;
 
-    public IndexModel(ILogger<IndexModel> logger, AppDbContext context, IBlogPostLikeRepository blogPostLikeRepository, UserManager<BlogNETUser> userManager)
+    public IndexModel(ILogger<IndexModel> logger, AppDbContext context, UserManager<BlogNETUser> userManager)
     {
         _logger = logger;
         _context = context;
-        _blogPostLikeRepository = blogPostLikeRepository;
         _userManager = userManager;
     }
     
