@@ -138,20 +138,3 @@
     </div>
 </div>
 
-@section Scripts
-    {
-    <script>
-        const btnLike = document.getElementById("btn-Like");
-        const thumbsUpIcon = document.getElementById("thumbsUpIcon");
-
-        btnLike.addEventListener("click", () => {
-            if (thumbsUpIcon.classList.contains("bi-hand-thumbs-up")) {
-                thumbsUpIcon.classList.remove("bi-hand-thumbs-up");
-                thumbsUpIcon.classList.add("bi-hand-thumbs-up-fill");
-            } else {
-                thumbsUpIcon.classList.remove("bi-hand-thumbs-up-fill");
-                thumbsUpIcon.classList.add("bi-hand-thumbs-up");
-            }
-        });
-    </script>
-}
