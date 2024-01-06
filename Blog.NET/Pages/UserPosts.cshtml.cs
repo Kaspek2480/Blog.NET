@@ -57,7 +57,7 @@ public class UserPosts : PageModel
             .Take(PageSize)
             .ToList();
         
-        TotalPages = (int)Math.Ceiling(_context.Blogs.Count(p => p.Visible && p.UserId == user.Id) / (double)PageSize);
+        TotalPages = (int)Math.Ceiling(_context.Blogs.Count(p => p.UserId == user.Id) / (double)PageSize);
 
 
         return Page();
